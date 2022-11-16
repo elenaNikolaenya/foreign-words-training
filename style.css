@@ -96,10 +96,6 @@ main {
   align-items: flex-start;
 }
 
-.hidden {
-  display: none;
-}
-
 button {
   display: inline-block;
   font-weight: 400;
@@ -124,13 +120,15 @@ progress {
   width: 100%;
 }
 
-.slider-controls {
+.slider-controls, .add-control {
   text-align: center;
   margin-top: 20px;
 }
 
 .slider-controls button,
-#shuffle-words {
+#shuffle-words, #add-words, #add,
+#ok, #restart, #go-learn, #remove-words,
+#remove, #ok-remove {
   color: #212529;
   background-color: #f8f9fa;
   border: 1px solid #d3d4dc;
@@ -138,9 +136,95 @@ progress {
   margin-top: 10px;
 }
 
+#remove {  
+  margin-top: 0;
+  width: 100%;
+  max-width: 100px;
+}
+
+#shuffle-words, #add-words, #restart, #go-learn,
+#remove-words {
+  width: 100%;
+  max-width: 200px;
+}
+
+#ok-remove {
+  display: block;
+  margin: 30px auto 0;
+  width: 100%;
+  max-width: 100px;  
+}
+
 .slider-controls button:hover,
-#shuffle-words:hover {
+#shuffle-words:hover, #add-words:hover,
+#add:hover, #ok:hover, #restart:hover,
+#go-learn:hover, #remove-words:hover,
+#remove:hover, #ok-remove:hover {
   background-color: #dadbdc;
+}
+
+#add-block {
+  width: 300px;
+  height: 300px;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: #da2865;
+  color: whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.form-item:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+input {
+  border-radius: 0.25rem;
+  border: 1px solid #fedee75e;
+  background: whitesmoke;
+  outline: none;
+}
+
+.modal {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  background-color: #da2865;
+  border: 2px solid whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#remove-word-page {  
+  height: 600px;
+  width: 600px;
+  max-height: 80%;
+  overflow: scroll;
+  padding: 10px 20px;  
+  background-color: #fff;
+  border: 1px solid #e7e9f5;
+  -webkit-box-shadow: 0 2px 3px 0 rgb(38 45 67 / 2%);
+  box-shadow: 0 2px 3px 0 rgb(38 45 67 / 2%);
+  border-radius: 3px;
+}
+
+.remove-header {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 25px;
+}
+
+.word-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  align-items: center;
+  
 }
 
 .card {
@@ -164,6 +248,10 @@ progress {
 .fade-out {
   animation: fadeOut ease 1.5s;
   animation-fill-mode: forwards;
+}
+
+.faded {
+  opacity: 0;
 }
 
 .card.wrong {
@@ -212,11 +300,11 @@ progress {
   text-align: center;
 }
 
-.word-stats {
+.word-stats, .word-row {
   border-bottom: 1px solid #e7e9f5;
 }
 
-.word-stats .word span {
+.word-stats .word span, .word-row .word span {
   font-weight: bold;
 }
 
@@ -274,4 +362,8 @@ progress {
   100% {
     opacity: 0;
   }
+}
+
+.hidden {
+  display: none;
 }

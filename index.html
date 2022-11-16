@@ -23,11 +23,15 @@
             </h3>
             <progress id="words-progress" value="0" max="100">0%</progress>
             <button id="shuffle-words">Перемешать слова</button>
+            <button id="add-words">Добавить новое слово</button>
+            <button id="remove-words">Удалить слово</button>
           </div>
           <div id="exam-mode" class="hidden">
             <h3>Правильно отвечено <span id="correct-percent">0%</span></h3>
             <progress id="exam-progress" value="0" max="100">0%</progress>
             <p>Время тестирования <span id="time">00:00</span></p>
+            <button id="restart">Начать сначала</button>
+            <button id="go-learn">Вернуться к тренировке</button>
           </div>
         </div>
         <div class="content">
@@ -40,8 +44,8 @@
                       <h1></h1>
                     </div>
                   </div>
-                  <div class="flip-card-back" id="card-back">
-                    <div>
+                  <div class="flip-card-back">
+                    <div id="card-back">
                       <h1></h1>
                       <p><b>Пример:</b> <span></span></p>
                     </div>
@@ -50,11 +54,49 @@
               </div>
             </div>
             <div class="slider-controls">
-              <button id="back" type="button" disabled>◀️</button>
+              <button id="back" type="button">◀️</button>
               <button id="exam" type="button">Тестирование</button>
               <button id="next" type="button">▶️</button>
             </div>
           </div>
+          <div class="add-word-page hidden">
+            <div id="add-block">
+              <form id="form">
+                <div class="form-item">
+                  <label for="eng">Слово на английском</label>
+                  <input type="text" id="eng">
+                </div>
+                <div class="form-item">
+                  <label for="rus">Слово на русском</label>
+                  <input type="text" id="rus">
+                </div>
+                <div class="form-item">
+                  <label for="example">Пример (на английском)</label>
+                  <input type="text" id="example">
+                </div>
+              </form>
+              <div class="modal hidden">
+                <p>Пожалуйста, заполните все поля</p>
+                <button type="button" id="ok">OK</button>
+              </div>          
+            </div>            
+            <div class="add-control">
+              <button type="button" id="add">Добавить слово</button>
+            </div>          
+          </div>
+          <div id="remove-word-page" class="hidden">
+            <h2 class="remove-header">Если слово уже надежно закрепилось в памяти, его можно удалить 🕺</h2>
+            <div class="remove-content"></div>
+            <button type="button" id="ok-remove">OK</button>
+            <template id="removing">
+              <div class="word-row">
+                <p class="word">Слово: <span></span></p>
+                <div class="btn-wrapper">
+                  <button type="button" id="remove">Удалить</button>
+                </div>                 
+              </div>
+            </template>
+          </div>    
           <div id="exam-cards"></div>
         </div>
         <div class="motivation">Давай, ты сможешь!</div>
