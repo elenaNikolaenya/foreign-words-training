@@ -265,6 +265,8 @@ function showRemoveModal() {
     
     examWords = makeExamWords();
     localStorage.setItem('examWords', JSON.stringify(examWords));
+    // убираем индекс отображаемого элемента, на случай, если удаляем последнее слово
+    localStorage.removeItem('indexToPrint');
 
     deletedRow.querySelector('.btn-wrapper').innerHTML = '';
   });
