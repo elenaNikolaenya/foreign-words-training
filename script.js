@@ -13,7 +13,8 @@ const addWordPage = document.querySelector('.add-word-page');
 const engInput = document.querySelector('#eng');
 const rusInput = document.querySelector('#rus');
 const exampleInput = document.querySelector('#example');
-const addBtn = document.querySelector('#add');
+const addBtn = document.querySelector('#add'); 
+const notAddBtn = document.querySelector('#not-add');
 const modal = document.querySelector('.modal');
 const okBtn = document.querySelector('#ok');
 
@@ -191,6 +192,7 @@ function addNewWord() {
   function showForm() {
     studyCards.classList.add('hidden');
     removeWordPage.classList.add('hidden');
+    removeContent.innerHTML = '';
     shuffleBtn.disabled = true; // чтобы случайно не перемешать слова, пока мы их не видим
     addWordPage.classList.remove('hidden');
   };
@@ -215,6 +217,13 @@ function addNewWord() {
     localStorage.setItem('examWords', JSON.stringify(examWords));
 
     document.location.reload();
+  });
+  // кнопка не добавлять в мод.окне
+
+  notAddBtn.addEventListener('click', () => {
+    addWordPage.classList.add('hidden');
+    studyCards.classList.remove('hidden');
+    shuffleBtn.disabled = false;
   });
 
   function showModal() {

@@ -126,7 +126,7 @@ progress {
 }
 
 .slider-controls button,
-#shuffle-words, #add-words, #add,
+#shuffle-words, #add-words, #add, #not-add,
 #ok, #restart, #go-learn, #remove-words,
 #remove, #ok-remove {
   color: #212529;
@@ -157,7 +157,7 @@ progress {
 
 .slider-controls button:hover,
 #shuffle-words:hover, #add-words:hover,
-#add:hover, #ok:hover, #restart:hover,
+#add:hover, #not-add:hover, #ok:hover, #restart:hover,
 #go-learn:hover, #remove-words:hover,
 #remove:hover, #ok-remove:hover {
   background-color: #dadbdc;
