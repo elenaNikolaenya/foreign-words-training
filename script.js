@@ -190,6 +190,8 @@ function addNewWord() {
   
   function showForm() {
     studyCards.classList.add('hidden');
+    removeWordPage.classList.add('hidden');
+    shuffleBtn.disabled = true; // чтобы случайно не перемешать слова, пока мы их не видим
     addWordPage.classList.remove('hidden');
   };
   // кнопка добавить в мод.окне
@@ -229,6 +231,8 @@ removeWordBtn.addEventListener(('click'), showRemoveModal);
 function showRemoveModal() {
   printRemoveModal();
   studyCards.classList.add('hidden');
+  addWordPage.classList.add('hidden');
+  shuffleBtn.disabled = true; // чтобы случайно не перемешать слова, пока мы их не видим
   removeWordPage.classList.remove('hidden');    
   
   function printRemoveModal() {   
@@ -425,12 +429,17 @@ function switchLearnMode() {
 
 // клики по карточкам в режиме тестирования
 let isCardSelected = false;
+let isCardWrong = false;
 let firstCard = null;
 let secondCard = null;
 
 examCards.addEventListener('click', (event) => {
   // если кликнули между карточками
   if (event.target.className !== 'card') {
+    return;
+  };
+  // если неправильный ответ еще не обработан
+  if (isCardWrong) {
     return;
   };
   // если кликнули по карточке
@@ -457,9 +466,11 @@ examCards.addEventListener('click', (event) => {
       };
     } else {
       secondCard.classList.add('wrong');
+      isCardWrong = true;
       setTimeout(() => {
         secondCard.classList.remove('wrong');
-      }, 500);
+        isCardWrong = false;
+      }, 500);            
     };
   };
 });
