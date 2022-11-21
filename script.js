@@ -85,7 +85,7 @@ function addWordToLearn(eng, rus, ex) {
 //массив, который будем перемешивать и использовать для режима тренировки
 let studyWords = [];
 try {
-  studyWords = JSON.parse(localStorage.getItem('studyWords') || '[]');
+  studyWords = JSON.parse(sessionStorage.getItem('studyWords') || '[]');
 } catch (error) {
   console.log(error);
 };
@@ -96,7 +96,7 @@ if (!studyWords.length) {
 // индекс слова, которое отображается на карточке
 let index = null;
 try {
-  index = JSON.parse(localStorage.getItem('indexToPrint') || '0');
+  index = JSON.parse(sessionStorage.getItem('indexToPrint') || '0');
 } catch (error) {
   console.log(error);
 };
@@ -163,13 +163,13 @@ function moveCards(step) {
   cardToStudy.classList.remove('active');  
   index += step;
   printStudyCard(index);
-  localStorage.setItem('indexToPrint', JSON.stringify(index));  
+  sessionStorage.setItem('indexToPrint', JSON.stringify(index));  
 };
 
 // кнопка перемешивания карточек
 shuffleBtn.addEventListener('click', () => {
   shuffle(studyWords);
-  localStorage.setItem('studyWords', JSON.stringify(studyWords));
+  sessionStorage.setItem('studyWords', JSON.stringify(studyWords));
   printStudyCard(index);
 });
 
@@ -211,15 +211,15 @@ function addNewWord() {
     localStorage.setItem('wordsToLearn', JSON.stringify(wordsToLearn));
 
     studyWords = [...wordsToLearn];
-    localStorage.setItem('studyWords', JSON.stringify(studyWords)); // если перемешали слова до добавления нового, то порядок вернется к исходному
+    sessionStorage.setItem('studyWords', JSON.stringify(studyWords)); // если перемешали слова до добавления нового, то порядок вернется к исходному
 
     examWords = makeExamWords(); // добавляем новое слово в экзамен
-    localStorage.setItem('examWords', JSON.stringify(examWords));
+    sessionStorage.setItem('examWords', JSON.stringify(examWords));
 
     document.location.reload();
   });
-  // кнопка не добавлять в мод.окне
 
+  // кнопка не добавлять в мод.окне
   notAddBtn.addEventListener('click', () => {
     addWordPage.classList.add('hidden');
     studyCards.classList.remove('hidden');
@@ -274,12 +274,12 @@ function showRemoveModal() {
     localStorage.setItem('wordsToLearn', JSON.stringify(wordsToLearn)); // если удалить все слова, то слова по умолчанию добавятся снова
 
     studyWords = [...wordsToLearn];
-    localStorage.setItem('studyWords', JSON.stringify(studyWords)); // если перемешали слова до удаления, то порядок вернется к исходному
+    sessionStorage.setItem('studyWords', JSON.stringify(studyWords)); // если перемешали слова до удаления, то порядок вернется к исходному
     
     examWords = makeExamWords();
-    localStorage.setItem('examWords', JSON.stringify(examWords));
+    sessionStorage.setItem('examWords', JSON.stringify(examWords));
     // убираем индекс отображаемого элемента, на случай, если удаляем последнее слово
-    localStorage.removeItem('indexToPrint');
+    sessionStorage.removeItem('indexToPrint');
 
     deletedRow.querySelector('.btn-wrapper').innerHTML = '';
   });
@@ -298,14 +298,14 @@ function showRemoveModal() {
 // массив с отдельными словами для экзамена, чтобы можно было ВСЕ перемешать
 let examWords = [];
 try {
-  examWords = JSON.parse(localStorage.getItem('examWords') || '[]');
+  examWords = JSON.parse(sessionStorage.getItem('examWords') || '[]');
 } catch (error) {
   console.log(error);
 };
 
 if (!examWords.length) {
   examWords = makeExamWords(); // массив с рандомным порядком слов
-  localStorage.setItem('examWords', JSON.stringify(examWords));
+  sessionStorage.setItem('examWords', JSON.stringify(examWords));
 };
 
 function makeExamWords() {
@@ -321,14 +321,14 @@ function makeExamWords() {
 // восстанавливаем прогресс, если он был
 let isExamModeOn = false;
 try {
-  isExamModeOn = JSON.parse(localStorage.getItem('examModeMark') || 'false');
+  isExamModeOn = JSON.parse(sessionStorage.getItem('examModeMark') || 'false');
 } catch (error) {
   console.log(error);
 };
 
 let fadedCardCounter = 0; // сколько слов уже было отвечено
 try {
-  fadedCardCounter = JSON.parse(localStorage.getItem('fadedCardCounter') || '0');
+  fadedCardCounter = JSON.parse(sessionStorage.getItem('fadedCardCounter') || '0');
 } catch (error) {
   console.log(error);
 };
@@ -346,7 +346,7 @@ function switchExamMode() {
   printExamCards();
   printCorrectPercent();
   runTimer();
-  localStorage.setItem('examModeMark', JSON.stringify(true));
+  sessionStorage.setItem('examModeMark', JSON.stringify(true));
 };
 
 function printExamCards() {
@@ -368,7 +368,7 @@ function printExamCards() {
 // таймер
 let seconds = null;
 try {
-  seconds = JSON.parse(localStorage.getItem('time') || '0');
+  seconds = JSON.parse(sessionStorage.getItem('time') || '0');
 } catch (error) {
   console.log(error);
 };
@@ -376,7 +376,7 @@ try {
 function runTimer() { 
   timerId = setInterval(() => {
     seconds += 1;
-    localStorage.setItem('time', JSON.stringify(seconds));
+    sessionStorage.setItem('time', JSON.stringify(seconds));
     timer.textContent = getTimeStr(seconds);
   }, 1000);
 };
@@ -456,19 +456,17 @@ examCards.addEventListener('click', (event) => {
     firstCard = event.target;    
     firstCard.classList.add('correct');
     isCardSelected = true;
-    markFirstWord(firstCard.textContent); //для подсчета попыток
+    countAttempts(firstCard.textContent);
   } else {
     secondCard = event.target;
-    countAttempts();
     if (checkAnswer(firstCard.textContent, secondCard.textContent)) {
       fadeOutWord(firstCard.textContent); // меточки для восстановления прогресса
       fadeOutWord(secondCard.textContent);
       secondCard.classList.add('correct', 'fade-out');
       firstCard.classList.add('fade-out');      
       fadedCardCounter += 2; // для подсчета % прогресса
-      localStorage.setItem('fadedCardCounter', JSON.stringify(fadedCardCounter));
+      sessionStorage.setItem('fadedCardCounter', JSON.stringify(fadedCardCounter));
       printCorrectPercent();
-      unmarkFirstWord();
       isCardSelected = false;
       if (fadedCardCounter === examWords.length) { // дошли до конца
         finishExam();
@@ -478,6 +476,8 @@ examCards.addEventListener('click', (event) => {
       isCardWrong = true;
       setTimeout(() => {
         secondCard.classList.remove('wrong');
+        firstCard.classList.remove('correct');
+        isCardSelected = false;
         isCardWrong = false;
       }, 500);            
     };
@@ -488,7 +488,7 @@ function fadeOutWord(text) {
   examWords.forEach((item) => {
     if(text === item.examWord) {
       item.isFadedOut = true;
-      localStorage.setItem('examWords', JSON.stringify(examWords));
+      sessionStorage.setItem('examWords', JSON.stringify(examWords));
     };
   });  
 };
@@ -504,27 +504,11 @@ function checkAnswer(word1, word2) {
   return false;
 };
 
-function markFirstWord(word) {
-  wordsToLearn.forEach((item) => {
+function countAttempts(word) {
+  studyWords.forEach((item) => {
     if (word === item.engWord || word === item.rusWord) {
-      item.mark = true;      
-    };
-  });  
-};
-
-function unmarkFirstWord() {
-  wordsToLearn.forEach((item) => {
-    if (item.mark) {
-      item.mark = false;
-    };
-  });  
-};
-
-function countAttempts() {
-  wordsToLearn.forEach((item) => {
-    if (item.mark) {
       item.attempts += 1;
-      localStorage.setItem('wordsToLearn', JSON.stringify(wordsToLearn));
+      sessionStorage.setItem('studyWords', JSON.stringify(studyWords));
     };
   });  
 };
@@ -543,30 +527,36 @@ function finishExam() {
 };
 
 function clearStorage() {
-  localStorage.removeItem('time');
-  localStorage.removeItem('studyWords');
-  localStorage.removeItem('fadedCardCounter');
-  localStorage.removeItem('examModeMark');
-  localStorage.removeItem('indexToPrint');
-  localStorage.removeItem('examWords');
+  sessionStorage.removeItem('time');
+  sessionStorage.removeItem('studyWords');
+  sessionStorage.removeItem('fadedCardCounter');
+  sessionStorage.removeItem('examModeMark');
+  sessionStorage.removeItem('indexToPrint');
+  sessionStorage.removeItem('examWords');
 };
 
 function removeStatMarks() {
-  unmarkFirstWord();
-
-  wordsToLearn.forEach((item) => item.attempts = 0);  
-  localStorage.setItem('wordsToLearn', JSON.stringify(wordsToLearn));
+  studyWords.forEach((item) => item.attempts = 0);  
+  sessionStorage.setItem('studyWords', JSON.stringify(studyWords));
 };
 
 // рисуем статистику
 function makeStatByTemplate(word) { 
   const wordStat = statTemplate.content.cloneNode(true);
-  wordStat.querySelector('.word span').textContent = word.engWord;
+  wordStat.querySelector('.word span').textContent = word.engWord;  
   wordStat.querySelector('.attempts span').textContent = word.attempts;
   return wordStat;  
 };
 
-function printStat() {   
+function printStat() { 
+  wordsToLearn.forEach((item) => {
+    studyWords.forEach((word) => {
+      if (word.engWord === item.engWord) {
+        item.attempts === word.attempts;
+      };
+    });
+  });
+
   const fragment = new DocumentFragment();
 
   wordsToLearn.forEach((item) => {   
