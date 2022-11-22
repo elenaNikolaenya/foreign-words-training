@@ -56,8 +56,7 @@ class Word {
     this.rusWord = rusWord;
     this.example = example;
     this.attempts = 0;
-    this.mark = false;
-  };  
+    };  
 };
 
 //исходный массив, используется для подсчета статистики и добавления слов
@@ -411,11 +410,12 @@ function reset() {
   examCards.innerHTML = "";
   clearStorage();
   // обнуляем статистику
-  removeStatMarks();
+  removeStatMarks();  
   //перемешиваем карточки и снимаем метки с отвеченных слов
   examWords = makeExamWords();  
   // сбрасываем флаги и иже с ним
   fadedCardCounter = 0;
+
   // если уже показана статистика, убираем окно
   resultsModal.classList.add('hidden');
   resultsContent.innerHTML = '';
@@ -460,7 +460,7 @@ examCards.addEventListener('click', (event) => {
   } else {
     secondCard = event.target;
     if (checkAnswer(firstCard.textContent, secondCard.textContent)) {
-      fadeOutWord(firstCard.textContent); // меточки для восстановления прогресса
+      fadeOutWord(firstCard.textContent); // метки для восстановления прогресса
       fadeOutWord(secondCard.textContent);
       secondCard.classList.add('correct', 'fade-out');
       firstCard.classList.add('fade-out');      
@@ -510,7 +510,7 @@ function countAttempts(word) {
       item.attempts += 1;
       sessionStorage.setItem('studyWords', JSON.stringify(studyWords));
     };
-  });  
+  });
 };
 
 function printCorrectPercent() {
@@ -549,14 +549,15 @@ function makeStatByTemplate(word) {
 };
 
 function printStat() { 
+  
   wordsToLearn.forEach((item) => {
-    studyWords.forEach((word) => {
+    studyWords.forEach((word) => {      
       if (word.engWord === item.engWord) {
-        item.attempts === word.attempts;
+        item.attempts = word.attempts;        
       };
     });
   });
-
+  
   const fragment = new DocumentFragment();
 
   wordsToLearn.forEach((item) => {   
